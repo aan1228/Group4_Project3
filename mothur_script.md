@@ -26,4 +26,17 @@ Alignment was done against the SILVA database of 16S rRNA. ```flip=T``` was chos
 
 ```
 align.seqs(fasta=depth165.trim.contigs.good.unique.fasta, reference=/home/micb405/data/project_3/databases/silva.nr_v128.align, flip=T)
+summary.seqs(fasta=depth165.trim.contigs.good.unique.align, count=depth165.trim.contigs.good.count_table)
 ```
+
+Remove sequences starting after 10370 or ending before 22539. Filter to format properly. Remove new duplicates if any arise.
+
+```
+screen.seqs(fasta=depth165.trim.contigs.good.unique.align, count=depth165.trim.contigs.good.count_table, summary=depth165.trim.contigs.good.unique.summary, start=10370, end=22539)
+filter.seqs(fasta=depth165.trim.contigs.good.unique.good.align, vertical=T, trump=.)
+unique.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.fasta, count=depth165.trim.contigs.good.good.count_table)
+```
+According to this website, MiSeq 2x300 error rate is 2.5%. Since sequences are ~300 bp, means 8 bases are likely incorrect. diff=8. actually did diff=4 becaused diff=8 killed too many things
+```
+pre.cluster(fasta=depth165.trim.contigs.good.unique.good.filter.unique.fasta, count=depth165.trim.contigs.good.unique.good.filter.count_table, diffs=8)
+
