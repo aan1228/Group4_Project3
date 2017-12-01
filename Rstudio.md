@@ -1,3 +1,23 @@
+## Creating Figure x
+
+```R
+#Load the data table and ggplot
+library(ggplot2)
+phylum = read.table('Mothur_workflow.csv', header=TRUE, sep=',')
+
+#Order x-axis
+positions <- c("Initial", "Filter 1", "Filter 2", "Pre-clustering", "Chimera Removal", "Singleton Removal")
+
+#Plot paired bar plot
+ggplot(phylum, aes(factor(Procedure), Number, fill = Sequence_Type)) +
+  geom_bar(stat="identity", position="dodge") +
+  xlab("Workflow") +
+  ylab("Number of Sequences") +
+  scale_fill_brewer(palette="Set2") +
+  scale_x_discrete(limits = positions) +
+  theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
+```
+
 ## Creating Figure X
 
 Representative code from the Total Sequences plot is shown.
