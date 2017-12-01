@@ -2,6 +2,7 @@
 
 Representative code from the Total Sequences plot is shown.
 ```R
+#Load the data table and ggplot
 library(ggplot2)
 threshold = read.table('Total.csv', header=TRUE, sep=',')
 
@@ -27,6 +28,7 @@ ggplot(new, aes(factor(Workflow), Count, fill=Threshold)) +
 ## Creating Figure X
 
 ```R
+#Load the data table and ggplot
 library(ggplot2)
 phylum = read.table('GG_S_Phylum.csv', header=TRUE, sep=',')
 
@@ -51,8 +53,9 @@ ggplot(new, aes(factor(Phylum), Count, fill=Database)) +
 
 Representative code of the Archaea plot is shown below.
 ```R
+#Load the data table and ggplot
 library(ggplot2)
-archaea = read.table('bacteria.tsv', header=TRUE, sep='\t')
+archaea = read.table('archaea.tsv', header=TRUE, sep='\t')
 
 #Plot stacked bar plot
 ggplot(data = archaea, aes(x = Database, y = Number, fill=Phylum)) + 
