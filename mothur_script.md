@@ -29,14 +29,51 @@ align.seqs(fasta=depth165.trim.contigs.good.unique.fasta, reference=/home/micb40
 summary.seqs(fasta=depth165.trim.contigs.good.unique.align, count=depth165.trim.contigs.good.count_table)
 ```
 
-Remove sequences starting after 10370 or ending before 22539. Filter to format properly. Remove new duplicates if any arise.
+Remove sequences starting after 10370 or ending before 22539. Results were summarized.
 
 ```
 screen.seqs(fasta=depth165.trim.contigs.good.unique.align, count=depth165.trim.contigs.good.count_table, summary=depth165.trim.contigs.good.unique.summary, start=10370, end=22539)
+summary.seqs(fasta=depth165.trim.contigs.good.unique.good.align, count=depth165.trim.contigs.good.good.count_table)
+
+```
+Filter to format properly. Remove new duplicates if any arise. PCR amplification introduces around 2-4 errors per 300 bp. diff=4 was chosen because diff=3 and lower caused the chimera.uchime() step to be too long, while diff=5 and greater would result in sequences that were actually different to be grouped together, losing OTUs. Results were summarized.
+```
 filter.seqs(fasta=depth165.trim.contigs.good.unique.good.align, vertical=T, trump=.)
 unique.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.fasta, count=depth165.trim.contigs.good.good.count_table)
+pre.cluster(fasta=depth165.trim.contigs.good.unique.good.filter.unique.fasta, count=depth165.trim.contigs.good.unique.good.filter.count_table, diffs=4)
+summary.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.count_table)
 ```
-According to this website, MiSeq 2x300 error rate is 2.5%. Since sequences are ~300 bp, means 8 bases are likely incorrect. diff=8. actually did diff=4 becaused diff=8 killed too many things
+
+chimera.uchime removed chimeric sequences and the results were summarized.
 ```
-pre.cluster(fasta=depth165.trim.contigs.good.unique.good.filter.unique.fasta, count=depth165.trim.contigs.good.unique.good.filter.count_table, diffs=8)
+chimera.uchime(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t)
+remove.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, accnos=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos)
+summary.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table)
+```
+Singletons were then removed and the results were summarized.
+
+```
+split.abund(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, cutoff=1)
+summary.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.abund.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.abund.count_table)
+```
+The resulting file was renamed to avoid confusion, and a distance matrix was constructed with this file. output=lt was chosen to make a phylip formatted lower triangle matrix rather than a column-formatted matrix to save space.
+```
+system(cp depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.abund.fasta depth165.final.fasta)
+system(cp depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.abund.count_table depth165.final.count_table)
+dist.seqs(fasta=depth165.final.fasta, output=lt)
+```
+Clustering was done using opti. A level of 97% similarity (label=0.03) was chosen to make OTUs at the species level. This parameter was also adjusted.
+```
+cluster(phylip=depth165.final.phylip.dist, count=depth165.final.count_table, method=opti)"
+make.shared(list=depth165.final.phylip.opti_mcc.list, count=depth165.final.count_table, label=0.03)"
+```
+Finally, the OTUs were annotated using Greengenes. SILVA was also used, but deemed unsatisfactory due to higher number of OTUs un-annotated. 95% confidence was chosen, but this was also changed.
+```
+classify.seqs(fasta=depth165.final.fasta, count=depth165.final.count_table, template=/home/micb405/data/project_3/databases/gg_13_8_99.fasta, taxonomy=/home/micb405/data/project_3/databases/gg_13_8_99.gg.tax, cutoff=95)
+classify.otu(list=depth165.final.phylip.opti_mcc.list, taxonomy=depth165.final.gg.wang.taxonomy, count=depth165.final.count_table, label=0.03, cutoff=95, basis=otu, probs=f)
+```
+
+# FOR TESTING DIFFERENT LABELS
+cluster(phylip=depth165.final.phylip.dist.test, count=depth165.final.count_table, method=opti, cutoff=0.10)
+make.shared(list=depth165.final.phylip.opti_mcc.list.test, count=depth165.final.count_table, label=0.01-0.02-0.03-0.05-0.10)
 
