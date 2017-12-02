@@ -66,7 +66,7 @@ unique.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.fasta, count=dep
 The outputs of the two filtering steps were later put into a directory called ```screen```.
 
 ## Preclustering
-Since 2x300 MiSeq sequencing and PCR amplification introduces around 2-4 errors per 300 bp, diff=4 was chosen for pre-clustering, outputting a fasta file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta``` and its corresponding count table. Results were summarized and generated a summary file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.summary```.
+Since 2x300 MiSeq sequencing and PCR amplification introduces around 2-4 errors per 300 bp, diff=4 was chosen for pre-clustering. This means that sequences can be clustered only if there are 4 or less base differences between the two sequences. This outputs a fasta file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta``` and its corresponding count table. Results were summarized and generated a summary file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.summary```.
 ```
 pre.cluster(fasta=depth165.trim.contigs.good.unique.good.filter.unique.fasta, count=depth165.trim.contigs.good.unique.good.filter.count_table, diffs=4)
 summary.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.count_table)
