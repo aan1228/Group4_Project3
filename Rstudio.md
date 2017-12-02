@@ -1,4 +1,4 @@
-## Creating Figure 1: Total and unique Sequences after workflow steps.
+## Creating Figure 1: Total and unique sequences after workflow steps
 
 ```R
 #Load the data table and ggplot
@@ -58,7 +58,7 @@ ggplot(data = archaea, aes(x = Database, y = Number, fill=Phylum)) +
   geom_bar(stat="identity") +
   ylab("Number of Sequences")
 ```
-## Creating Figure 4: Comparing annotated phyla of microbiota at 165 m depth in the Saanich Inlet using Greengenes or SILVA as the database
+## Creating Figure 4: Comparing annotated phyla using Greengenes or SILVA
 
 ```R
 #Load the data table and ggplot
@@ -82,7 +82,7 @@ ggplot(new, aes(factor(Phylum), Count, fill=Database)) +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 ```
 
-## Creating Figure 5: Phylum Distribution
+## Creating Figure 5: Phylum distribution
 ```R
 #Load phylum data
 phylum <- 
