@@ -1,79 +1,92 @@
-# Assembly and Filter
+# Methods
 
-Set the output directory to ```project3/output```
+Figure 1. Workflow Structure.
+
+## Assembly
+
+Set the output directory to ```project3/output```. This means that all outputs are saved into this directory.
 ```
 set.dir(output=/home/micb405/Group4/project3/output)
 ```
-Make a file called ```depth165.files```. It will contain all paired FASTA files of all depths, so use a text editor to remove depths that are not 165 metres. Then align the FASTA files and generate a summary of the contigs.
+Make a file called ```depth165.files```. It will contain all paired FASTA files of all depths, so use a text editor to remove depths that are not 165 metres. These 2x300 paired end reads were combined into contigs, generating a fasta file called ```depth165.trim.contigs.fasta```. This fasta file was summarized in ```depth165.trim.contigs.summary``` to see what the range of contig lengths were.  
 ```
 make.file(inputdir=/home/micb405/data/project_3, prefix=depth165)
 make.contigs(file=depth165.files)
 summary.seqs(fasta=depth165.trim.contigs.fasta)
 ```
-Since we expect the 16S V4-V5 region to be 303 bp, we chose cutoffs +/- 10bp from that. We arbitrary? chose 5 and 10 for ambiguous bases and homopolymer counts.
+The outputs to these commands were later placed in the directory called ```contigs```.
+
+## Filter 1
+The first filtering step removed sequences with lengths less than 295 or greater than 315, or with ambiguous bases greater than 5 or homopolymers greater than 10. This generated another fasta file called ```depth165.trim.contigs.good.fasta```.
 ```
 screen.seqs(fasta=depth165.trim.contigs.fasta, group=depth165.contigs.groups, maxambig=5, maxhomop=10, minlength=203, maxlength=313)
 ```
-
-Then we found only unique sequences and determined how many alignments passed quality control.
+Then we determined the number of unique sequences present as well as reduce the amount of processing required for downstream steps. A count table was generated to merge the .names and .groups files together for downstream steps, called ```depth165.trim.contigs.good.count_table```. The number of contigs that passed quality control were summarized in ```depth165.trim.contigs.good.unique.summary```.
 ```
 unique.seqs(fasta=depth165.trim.contigs.good.fasta)
 count.seqs(name=depth165.trim.contigs.good.names, group=depth165.contigs.good.groups)
 summary.seqs(fasta=depth165.trim.contigs.good.unique.fasta, count=depth165.trim.contigs.good.count_table)
 ```
 
-Alignment was done against the SILVA database of 16S rRNA. ```flip=T``` was chosen to allow mothur to try aligning with the reverse complement. Though this increases the computation required, it would also increase the chances that alignments can be made for more of the contigs.
+## Filter 2
 
+Alignment was done against the SILVA database of 16S rRNA. ```flip=T``` was chosen to allow mothur to try aligning with the reverse complement. Though this increases the computation required, it would also increase the chances that alignments can be made for more of the contigs. A fasta file was generated called ```depth165.trim.contigs.good.unique.align```. The results were then summarized.
 ```
 align.seqs(fasta=depth165.trim.contigs.good.unique.fasta, reference=/home/micb405/data/project_3/databases/silva.nr_v128.align, flip=T)
 summary.seqs(fasta=depth165.trim.contigs.good.unique.align, count=depth165.trim.contigs.good.count_table)
 ```
 
-Remove sequences starting after 10370 or ending before 22539. Results were summarized.
+The second filtering step removed sequences starting after 10370 or ending before 22539 based on alignment position, outputting a fasta file called ```depth165.trim.contigs.good.unique.good.align``` and its corresponding count table. Results were summarized in ```depth165.trim.contigs.good.unique.good.summary```.
 
 ```
 screen.seqs(fasta=depth165.trim.contigs.good.unique.align, count=depth165.trim.contigs.good.count_table, summary=depth165.trim.contigs.good.unique.summary, start=10370, end=22539)
 summary.seqs(fasta=depth165.trim.contigs.good.unique.good.align, count=depth165.trim.contigs.good.good.count_table)
 
 ```
-Filter to format properly. Remove new duplicates if any arise. PCR amplification introduces around 2-4 errors per 300 bp. diff=4 was chosen because diff=3 and lower caused the chimera.uchime() step to be too long, while diff=5 and greater would result in sequences that were actually different to be grouped together, losing OTUs. Results were summarized.
+Since the alignment earlier added . and - to the fasta file, these were filtered out to generate a fasta file called ```depth165.trim.contigs.good.unique.good.filter.fasta``` and corresponding count table. This step may have also resulted in duplicates, so the number of unique sequences were determined again and outputted in a fasta file called ```depth165.trim.contigs.good.unique.good.filter.unique.fasta``` and corresponding count table. 
 ```
 filter.seqs(fasta=depth165.trim.contigs.good.unique.good.align, vertical=T, trump=.)
 unique.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.fasta, count=depth165.trim.contigs.good.good.count_table)
+```
+The outputs of the two filtering steps were later put into a directory called ```screen```.
+
+## Preclustering
+Since 2x300 MiSeq sequencing and PCR amplification introduces around 2-4 errors per 300 bp, diff=4 was chosen for pre-clustering, outputting a fasta file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta``` and its corresponding count table. Results were summarized and generated a summary file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.summary```.
+```
 pre.cluster(fasta=depth165.trim.contigs.good.unique.good.filter.unique.fasta, count=depth165.trim.contigs.good.unique.good.filter.count_table, diffs=4)
 summary.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.count_table)
 ```
+The outputs of the preclustering step was later put into a directory called ```precluster```.
 
-chimera.uchime removed chimeric sequences and the results were summarized.
+## Chimera Removal
+chimera.uchime identified chimeric sequences, which were then removed from the fasta file generated after preclustering according to the outputted .accnos file. This outputted a fasta file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta``` and its corresponding count table. The results were then summarized in ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.summary```.
 ```
 chimera.uchime(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t)
 remove.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, accnos=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos)
 summary.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table)
 ```
-Singletons were then removed and the results were summarized.
-
+## Singleton Removal
+Singletons were identified, resulting in a .abund.fasta and .rare.fasta file. The .abund file contained sequences that were not singletons, and thus was used for downstream processes. The results were summarized.
 ```
 split.abund(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.count_table, cutoff=1)
 summary.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.abund.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.abund.count_table)
 ```
-The resulting file was renamed to avoid confusion, and a distance matrix was constructed with this file. output=lt was chosen to make a phylip formatted lower triangle matrix rather than a column-formatted matrix to save space.
+The outputs of chimera and singleton removal were later put into a directory called ```chimera```.
+
+## Clustering and Annotation
+The ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.abund.fasta``` file generated after singleton removal was renamed to ```depth165.final.fasta``` avoid confusion, and its corresponding count table was renamed to ```depth165.final.count_table```. A distance matrix was constructed with this file, called ```depth165.final.phylip.dist```. output=lt was chosen to make a phylip formatted lower triangle matrix rather than a column-formatted matrix to save space.
 ```
 system(cp depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.abund.fasta depth165.final.fasta)
 system(cp depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.pick.abund.count_table depth165.final.count_table)
 dist.seqs(fasta=depth165.final.fasta, output=lt)
 ```
-Clustering was done using opti. A level of 97% similarity (label=0.03) was chosen to make OTUs at the species level. This parameter was also adjusted.
+Clustering was done using opti. A level of 97% similarity (label=0.03) was chosen to make OTUs at the species level. Clustering resulted in a variety of outputs, the most important ones being the .list file which maps the number of sequences to each OTU clustered. This was combined into a human readable OTU called ```depth165.final.phylip.opti_mcc.shared```.
 ```
 cluster(phylip=depth165.final.phylip.dist, count=depth165.final.count_table, method=opti)"
 make.shared(list=depth165.final.phylip.opti_mcc.list, count=depth165.final.count_table, label=0.03)"
 ```
-Finally, the OTUs were annotated using Greengenes. SILVA was also used, but deemed unsatisfactory due to higher number of OTUs un-annotated. 95% confidence was chosen, but this was also changed.
+Finally, the OTUs were annotated using Greengenes. SILVA was also considered, but deemed unsatisfactory (see Results). 95% confidence was chosen. The outputs were a cons.taxonomy and a tax.summary file, the former of which was used with the .shared file mentioned previously for the Python script provided by Dr. Dill-McFarland to determine taxonomy.
 ```
 classify.seqs(fasta=depth165.final.fasta, count=depth165.final.count_table, template=/home/micb405/data/project_3/databases/gg_13_8_99.fasta, taxonomy=/home/micb405/data/project_3/databases/gg_13_8_99.gg.tax, cutoff=95)
 classify.otu(list=depth165.final.phylip.opti_mcc.list, taxonomy=depth165.final.gg.wang.taxonomy, count=depth165.final.count_table, label=0.03, cutoff=95, basis=otu, probs=f)
 ```
-
-# FOR TESTING DIFFERENT LABELS
-cluster(phylip=depth165.final.phylip.dist.test, count=depth165.final.count_table, method=opti, cutoff=0.10)
-make.shared(list=depth165.final.phylip.opti_mcc.list.test, count=depth165.final.count_table, label=0.01-0.02-0.03-0.05-0.10)
-
