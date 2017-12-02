@@ -100,9 +100,9 @@ Clustering was done using opti. A level of 97% similarity (label=0.03) was chose
 cluster(phylip=depth165.final.phylip.dist, count=depth165.final.count_table, method=opti)"
 make.shared(list=depth165.final.phylip.opti_mcc.list, count=depth165.final.count_table, label=0.03)"
 ```
-Richness measurements were also done on this data. Sobs, Chao1, and Shannon were calculated in the output file ```depth165.final.phylip.opti_mcc.groups.summary```.
+Richness measurements were also done on this data. Sobs, Chao1, ACE, and Shannon were calculated in the output file ```depth165.final.phylip.opti_mcc.groups.summary```.
 ```
-summary.single(shared=depth165.final.phylip.opti_mcc.shared, label=0.03, calc=nseqs-sobs-chao-shannon-coverage)
+summary.single(shared=depth165.final.phylip.opti_mcc.shared, label=0.03, calc=nseqs-sobs-chao-shannon-ace-coverage)
 ```
 The outputs from the steps above were later put into a directory called ```cluster```.
 
