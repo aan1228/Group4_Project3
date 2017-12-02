@@ -1,12 +1,21 @@
 # Methods
 
+## Housekeeping
+
+General workflow (Figure 1) and directory structure (Figure 2) are below.
+
 ![Workflow](https://i.imgur.com/TmsmL5U.png)
 Figure 1. Workflow Structure.
 
-
-
 ![Directory](https://i.imgur.com/RX4KmGu.png)
 Figure 2. Directory Structure.
+
+FASTQC was run on the paired FASTA files at 165 m depth to determine sequence quality. 
+```
+cd /home/micb405/Group4/project3
+fastqc -t 2 /home/micb405/data/project_3/SI072_S3_165_1.fastq /home/micb405/data/project_3/SI072_S3_165_2.fastq -o FASTQC
+```
+The following commands are done in ```mothur```. They could also have been run in bash by typing ```mothur "#command"```.
 
 ## Assembly
 
