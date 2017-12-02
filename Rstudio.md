@@ -1,9 +1,9 @@
-## Creating Figure x
+## Creating Figure 1
 
 ```R
 #Load the data table and ggplot
 library(ggplot2)
-phylum = read.table('Mothur_workflow.csv', header=TRUE, sep=',')
+phylum = read.table('workflow.csv', header=TRUE, sep=',')
 
 #Order x-axis
 positions <- c("Initial", "Filter 1", "Filter 2", "Pre-clustering", "Chimera Removal", "Singleton Removal")
