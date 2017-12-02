@@ -7,7 +7,7 @@ General workflow (Figure 1) and directory structure (Figure 2) are below.
 ![Workflow](https://i.imgur.com/TmsmL5U.png)
 Figure 1. Workflow Structure.
 
-![Directory](https://i.imgur.com/RX4KmGu.png)
+![Directory](https://i.imgur.com/lzDQSqI.png)
 Figure 2. Directory Structure.
 
 FASTQC was run on the paired FASTA files at 165 m depth to determine sequence quality. 
