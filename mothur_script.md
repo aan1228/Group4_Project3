@@ -32,7 +32,7 @@ summary.seqs(fasta=depth165.trim.contigs.fasta)
 The outputs to these commands were later placed in the directory called ```contigs```.
 
 ## Filter 1
-The first filtering step removed sequences with lengths less than 295 or greater than 315, or with ambiguous bases greater than 5 or homopolymers greater than 10. This generated another fasta file called ```depth165.trim.contigs.good.fasta```.
+The first filtering step removed sequences with lengths less than 295 or greater than 315, or with ambiguous bases greater than 5 or homopolymers greater than 10. See the Results section for our reasoning for this selection. This generated another fasta file called ```depth165.trim.contigs.good.fasta```.
 ```
 screen.seqs(fasta=depth165.trim.contigs.fasta, group=depth165.contigs.groups, maxambig=5, maxhomop=10, minlength=295, maxlength=315)
 ```
@@ -51,7 +51,7 @@ align.seqs(fasta=depth165.trim.contigs.good.unique.fasta, reference=/home/micb40
 summary.seqs(fasta=depth165.trim.contigs.good.unique.align, count=depth165.trim.contigs.good.count_table)
 ```
 
-The second filtering step removed sequences starting after 10370 or ending before 22539 based on alignment position, outputting a fasta file called ```depth165.trim.contigs.good.unique.good.align``` and its corresponding count table. Results were summarized in ```depth165.trim.contigs.good.unique.good.summary```.
+The second filtering step removed sequences starting after 10370 or ending before 22539 based on alignment position, outputting a fasta file called ```depth165.trim.contigs.good.unique.good.align``` and its corresponding count table. See the Results section for our reasoning for this selection. Results were summarized in ```depth165.trim.contigs.good.unique.good.summary```.
 
 ```
 screen.seqs(fasta=depth165.trim.contigs.good.unique.align, count=depth165.trim.contigs.good.count_table, summary=depth165.trim.contigs.good.unique.summary, start=10370, end=22539)
@@ -64,6 +64,8 @@ filter.seqs(fasta=depth165.trim.contigs.good.unique.good.align, vertical=T, trum
 unique.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.fasta, count=depth165.trim.contigs.good.good.count_table)
 ```
 The outputs of the two filtering steps were later put into a directory called ```screen```.
+
+We also changed parameters in the first and second filtering step. These outputs were put into the directory ```2.5_7.5``` and ```25_75```, reflecting their percentile parameter cutoffs (see Results).
 
 ## Preclustering
 Since 2x300 MiSeq sequencing and PCR amplification introduces around 2-4 errors per 300 bp, diff=4 was chosen for pre-clustering. This means that sequences can be clustered only if there are 4 or less base differences between the two sequences. This outputs a fasta file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta``` and its corresponding count table. Results were summarized and generated a summary file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.summary```.
@@ -118,5 +120,3 @@ The outputs from annotation and classification, as well as outputs from the pyth
 The python script provided by Dr. Dill-McFarland found [here](https://github.com/EDUCE-UBC/MICB405_project3/blob/master/taxonomy1b.py) was used to determine taxonomy of our samples. This was done using the ```depth165.final.phylip.opti_mcc.0.03.cons.taxonomy``` and ```depth165.final.phylip.opti_mcc.shared```files, and outputted a .txt file that was renamed accordingly. The python script was called ```taxonomy.py``` and found in the ```project3``` directory.
 
 Rstudio was also used to graph our results. Rstudio scripts can be found [here](https://github.com/aan1228/Group4_Project3/blob/master/Rstudio.md).
-
-We also changed parameters in the first and second filtering step. These outputs were put into the directory ```2.5_7.5``` and ```25_75```, reflecting their percentile parameter cutoffs (see Results).
