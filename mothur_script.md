@@ -117,6 +117,6 @@ The outputs from annotation and classification, as well as outputs from the pyth
 
 The python script provided by Dr. Dill-McFarland found [here](https://github.com/EDUCE-UBC/MICB405_project3/blob/master/taxonomy1b.py) was used to determine taxonomy of our samples. This was done using the ```depth165.final.phylip.opti_mcc.0.03.cons.taxonomy``` and ```depth165.final.phylip.opti_mcc.shared```files, and outputted a .txt file that was renamed accordingly. The python script was called ```taxonomy.py``` and found in the ```project3``` directory.
 
-Rstudio was also used to graph our results. Rstudio scripts can be found [here](https://github.com/aan1228/Group4_Project3/blob/master/mothur_script.md).
+Rstudio was also used to graph our results. Rstudio scripts can be found [here](https://github.com/aan1228/Group4_Project3/blob/master/Rstudio.md).
 
 We also changed parameters in the first and second filtering step. These outputs were put into the directory ```2.5_7.5``` and ```25_75```, reflecting their percentile parameter cutoffs (see Results).
