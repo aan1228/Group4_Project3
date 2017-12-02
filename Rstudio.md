@@ -57,7 +57,8 @@ archaea = read.table('archaea.tsv', header=TRUE, sep='\t')
 ggplot(data = archaea, aes(x = Database, y = Number, fill=Phylum)) + 
   geom_bar(stat="identity") +
   ylab("Number of Sequences")
-```## Creating Figure 4: Comparing annotated phyla of microbiota at 165 m depth in the Saanich Inlet using Greengenes or SILVA as the database
+```
+## Creating Figure 4: Comparing annotated phyla of microbiota at 165 m depth in the Saanich Inlet using Greengenes or SILVA as the database
 
 ```R
 #Load the data table and ggplot
@@ -81,7 +82,7 @@ ggplot(new, aes(factor(Phylum), Count, fill=Database)) +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 ```
 
-## Creating Figure X for Phylum Distribution
+## Creating Figure 5: Phylum Distribution
 ```R
 #Load phylum data
 phylum <- 
@@ -108,7 +109,7 @@ pie <- ggplot(data = phylum, aes(x = "", y = percent, fill = Phylum)) +
 pie + coord_polar(theta = "y")
 ```
 
-## Creating Figure X for Proteobacteria class distribution
+## Creating Figure 6: Proteobacteria class distribution
 
 ```R
 #Inputting proteobacteria class data
@@ -130,4 +131,29 @@ pie2 <- ggplot(data = class, aes(x = "", y = percent, fill = Class)) +
 
 #Creating pie chart from object “pie2”
 pie2 + coord_polar(theta = "y")
+```
+## Creating Figure 7: Genus distribution
+```R
+#Input data
+genus2 <- 
+  read.csv(file.choose())
+genus2
+
+#Rerordering columns so they are ordered smallest to largest group
+genus2$Genus <- reorder(genus2$Genus, genus2$percent)
+genus2$Genus <- factor(genus2$Genus, levels=rev(levels(genus2$Genus)))
+
+
+#Using RColorBrewer to expand colour palettes to accommodate the 45 genus groups
+library(RColorBrewer)
+colourCount3 = length(unique(genus$Genus))
+getPalette3 = colorRampPalette(brewer.pal(9, "Set1"))
+
+#Creating barplot
+pie4 <- ggplot(data = genus2, aes(x = "", y = percent, fill = Genus)) + 
+  geom_bar(stat="identity") +
+  scale_fill_manual(values = getPalette3(colourCount3))
+
+#Creating piechart from barplot
+pie4 + coord_polar(theta = "y")
 ```
