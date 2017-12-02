@@ -85,7 +85,7 @@ Clustering was done using opti. A level of 97% similarity (label=0.03) was chose
 cluster(phylip=depth165.final.phylip.dist, count=depth165.final.count_table, method=opti)"
 make.shared(list=depth165.final.phylip.opti_mcc.list, count=depth165.final.count_table, label=0.03)"
 ```
-Finally, the OTUs were annotated using Greengenes. SILVA was also considered, but deemed unsatisfactory (see Results). 95% confidence was chosen. The outputs were ```depth165.final.phylip.opti_mcc.0.03.cons.taxonomy``` and ```depth165.final.phylip.opti_mcc.0.03.cons.tax.summary```, the former of which was used with the .shared file mentioned previously for the Python script provided by Dr. Dill-McFarland to determine taxonomy.
+Finally, the OTUs were annotated using Greengenes. SILVA was also considered, but deemed unsatisfactory (see Results). 95% confidence was chosen. The outputs were ```depth165.final.gg.wang.taxonomy``` and ```depth165.final.gg.wang.tax.summary```. The OTUs were then classified and the outputs were ```depth165.final.phylip.opti_mcc.0.03.cons.taxonomy``` and ```depth165.final.phylip.opti_mcc.0.03.cons.tax.summary```, the former of which was used with the .shared file mentioned previously for the Python script provided by Dr. Dill-McFarland to determine taxonomy.
 ```
 classify.seqs(fasta=depth165.final.fasta, count=depth165.final.count_table, template=/home/micb405/data/project_3/databases/gg_13_8_99.fasta, taxonomy=/home/micb405/data/project_3/databases/gg_13_8_99.gg.tax, cutoff=95)
 classify.otu(list=depth165.final.phylip.opti_mcc.list, taxonomy=depth165.final.gg.wang.taxonomy, count=depth165.final.count_table, label=0.03, cutoff=95, basis=otu, probs=f)
