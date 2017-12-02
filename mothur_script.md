@@ -34,7 +34,7 @@ The outputs to these commands were later placed in the directory called ```conti
 ## Filter 1
 The first filtering step removed sequences with lengths less than 295 or greater than 315, or with ambiguous bases greater than 5 or homopolymers greater than 10. This generated another fasta file called ```depth165.trim.contigs.good.fasta```.
 ```
-screen.seqs(fasta=depth165.trim.contigs.fasta, group=depth165.contigs.groups, maxambig=5, maxhomop=10, minlength=203, maxlength=313)
+screen.seqs(fasta=depth165.trim.contigs.fasta, group=depth165.contigs.groups, maxambig=5, maxhomop=10, minlength=295, maxlength=315)
 ```
 Then we determined the number of unique sequences present as well as reduce the amount of processing required for downstream steps. A count table was generated to merge the .names and .groups files together for downstream steps, called ```depth165.trim.contigs.good.count_table```. The number of contigs that passed quality control were summarized in ```depth165.trim.contigs.good.unique.summary```.
 ```
