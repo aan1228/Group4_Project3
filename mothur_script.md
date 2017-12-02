@@ -21,7 +21,7 @@ The following commands are done in ```mothur```. They could also have been run i
 
 Set the output directory to ```project3/mothur_output```. This means that all outputs are saved into this directory.
 ```
-set.dir(output=/home/micb405/Group4/project3/output)
+set.dir(output=/home/micb405/Group4/project3/mothur_output)
 ```
 Make a file called ```depth165.files```. It will contain all paired FASTA files of all depths, so use a text editor to remove depths that are not 165 metres. These 2x300 paired end reads were combined into contigs, generating a fasta file called ```depth165.trim.contigs.fasta```. This fasta file was summarized in ```depth165.trim.contigs.summary``` to see what the range of contig lengths were.  
 ```
