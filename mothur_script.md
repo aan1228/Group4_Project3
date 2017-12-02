@@ -1,10 +1,16 @@
 # Methods
 
+![Workflow](https://i.imgur.com/TmsmL5U.png)
 Figure 1. Workflow Structure.
+
+
+
+![Directory](https://i.imgur.com/RX4KmGu.png)
+Figure 2. Directory Structure.
 
 ## Assembly
 
-Set the output directory to ```project3/output```. This means that all outputs are saved into this directory.
+Set the output directory to ```project3/mothur_output```. This means that all outputs are saved into this directory.
 ```
 set.dir(output=/home/micb405/Group4/project3/output)
 ```
@@ -85,14 +91,19 @@ Clustering was done using opti. A level of 97% similarity (label=0.03) was chose
 cluster(phylip=depth165.final.phylip.dist, count=depth165.final.count_table, method=opti)"
 make.shared(list=depth165.final.phylip.opti_mcc.list, count=depth165.final.count_table, label=0.03)"
 ```
+The outputs from the clustering were later put into a directory called ```cluster```.
+
 Finally, the OTUs were annotated using Greengenes. SILVA was also considered, but deemed unsatisfactory (see Results). 95% confidence was chosen. The outputs were ```depth165.final.gg.wang.taxonomy``` and ```depth165.final.gg.wang.tax.summary```. The OTUs were then classified and the outputs were ```depth165.final.phylip.opti_mcc.0.03.cons.taxonomy``` and ```depth165.final.phylip.opti_mcc.0.03.cons.tax.summary```, the former of which was used with the .shared file mentioned previously for the Python script provided by Dr. Dill-McFarland to determine taxonomy.
 ```
 classify.seqs(fasta=depth165.final.fasta, count=depth165.final.count_table, template=/home/micb405/data/project_3/databases/gg_13_8_99.fasta, taxonomy=/home/micb405/data/project_3/databases/gg_13_8_99.gg.tax, cutoff=95)
 classify.otu(list=depth165.final.phylip.opti_mcc.list, taxonomy=depth165.final.gg.wang.taxonomy, count=depth165.final.count_table, label=0.03, cutoff=95, basis=otu, probs=f)
 ```
+The outputs from annotation and classification, as well as outputs from the python script, were moved into a directory called ```greengenes```. A similar method was done for SILVA for comparison, which was moved into a directory called ```SILVA```.
 
 ## Analysis
 
 The python script provided by Dr. Dill-McFarland found [here](https://github.com/EDUCE-UBC/MICB405_project3/blob/master/taxonomy1b.py) was used to determine taxonomy of our samples. This was done using the ```depth165.final.phylip.opti_mcc.0.03.cons.taxonomy``` and ```depth165.final.phylip.opti_mcc.shared```files, and outputted a .txt file that was renamed accordingly. 
 
 Rstudio was also used to graph our results. Rstudio scripts can be found [here](https://github.com/aan1228/Group4_Project3/blob/master/mothur_script.md).
+
+We also changed parameters in the first and second filtering step. These outputs were put into the directory ```2.5_7.5``` and ```25_75```, reflecting their percentile parameter cutoffs (see Results).
