@@ -1,4 +1,4 @@
-## Creating Figure 1
+## Creating Figure 1: Total and unique Sequences after workflow steps.
 
 ```R
 #Load the data table and ggplot
@@ -18,7 +18,7 @@ ggplot(phylum, aes(factor(Procedure), Number, fill = Sequence_Type)) +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 ```
 
-## Creating Figure X
+## Creating Figure 2: Effect of changing threshold for removing sequences
 
 Representative code from the Total Sequences plot is shown.
 ```R
@@ -45,7 +45,19 @@ ggplot(new, aes(factor(Workflow), Count, fill=Threshold)) +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 ```
 
-## Creating Figure X
+## Creating Figure 3: Comparing annotated and unknown sequences of between Greengenes and SILVA
+
+Representative code of the Archaea plot is shown below.
+```R
+#Load the data table and ggplot
+library(ggplot2)
+archaea = read.table('archaea.tsv', header=TRUE, sep='\t')
+
+#Plot stacked bar plot
+ggplot(data = archaea, aes(x = Database, y = Number, fill=Phylum)) + 
+  geom_bar(stat="identity") +
+  ylab("Number of Sequences")
+```## Creating Figure 4: Comparing annotated phyla of microbiota at 165 m depth in the Saanich Inlet using Greengenes or SILVA as the database
 
 ```R
 #Load the data table and ggplot
@@ -69,22 +81,8 @@ ggplot(new, aes(factor(Phylum), Count, fill=Database)) +
   theme(axis.text.x = element_text(angle=45, vjust=1, hjust=1))
 ```
 
-## Creating Figure X
-
-Representative code of the Archaea plot is shown below.
-```R
-#Load the data table and ggplot
-library(ggplot2)
-archaea = read.table('archaea.tsv', header=TRUE, sep='\t')
-
-#Plot stacked bar plot
-ggplot(data = archaea, aes(x = Database, y = Number, fill=Phylum)) + 
-  geom_bar(stat="identity") +
-  ylab("Number of Sequences")
-```
 ## Creating Figure X for Phylum Distribution
-
-```
+```R
 #Load phylum data
 phylum <- 
 	read.csv(file.choose())
