@@ -100,7 +100,11 @@ Clustering was done using opti. A level of 97% similarity (label=0.03) was chose
 cluster(phylip=depth165.final.phylip.dist, count=depth165.final.count_table, method=opti)"
 make.shared(list=depth165.final.phylip.opti_mcc.list, count=depth165.final.count_table, label=0.03)"
 ```
-The outputs from the clustering were later put into a directory called ```cluster```.
+Richness measurements were also done on this data. Sobs, Chao1, Shannon, and ACE were calculated in the output file ```depth165.final.phylip.opti_mcc.groups.summary```.
+```
+summary.single(shared=depth165.final.phylip.opti_mcc.shared, label=0.03, calc=nseqs-sobs-chao-shannon-ace-coverage)
+```
+The outputs from the steps above were later put into a directory called ```cluster```.
 
 Finally, the OTUs were annotated using Greengenes. SILVA was also considered, but deemed unsatisfactory (see Results). 95% confidence was chosen. The outputs were ```depth165.final.gg.wang.taxonomy``` and ```depth165.final.gg.wang.tax.summary```. The OTUs were then classified and the outputs were ```depth165.final.phylip.opti_mcc.0.03.cons.taxonomy``` and ```depth165.final.phylip.opti_mcc.0.03.cons.tax.summary```, the former of which was used with the .shared file mentioned previously for the Python script provided by Dr. Dill-McFarland to determine taxonomy.
 ```
