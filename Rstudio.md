@@ -82,3 +82,54 @@ ggplot(data = archaea, aes(x = Database, y = Number, fill=Phylum)) +
   geom_bar(stat="identity") +
   ylab("Number of Sequences")
 ```
+## Creating Figure X for Phylum Distribution
+
+```
+#Load phylum data
+phylum <- 
+	read.csv(file.choose())
+#Load ggplot
+library(ggplot2)
+
+#Reorder phylum groups so they are ordered based on size in the bar
+phylum$Phylum <- reorder(phylum$Phylum, phylum$percent)
+phylum$Phylum <- factor(phylum$Phylum, levels=rev(levels(phylum$Phylum)))
+
+#Using "wesanderson" colour palettes, expanding for 34 phyla
+install.packages("wesanderson")
+library(wesanderson)
+pal <- wes_palette(34, name = "Darjeeling", type = "continuous")
+
+#Make it into a barplot , using colour palette as created in previous step
+pie <- ggplot(data = phylum, aes(x = "", y = percent, fill = Phylum)) + 
+	geom_bar(stat="identity", width = 10) + 
+	 ylab("Percent") +
+	 scale_fill_manual(values = pal)
+
+#Transforming barplot into piechart
+pie + coord_polar(theta = "y")
+```
+
+## Creating Figure X for Proteobacteria class distribution
+
+```R
+#Inputting proteobacteria class data
+class <-  
+	read.csv(file.choose())
+
+#Reorder class groups so they are ordered based on size in the bar 
+class$Class <- reorder(class$Class, class$percent)
+class$Class <- factor(class$Class, levels=rev(levels(class$Class)))
+
+#Creating new palette for the 8 classes of proteobacteria
+pal2 <- wes_palette(8, name = "Darjeeling", type = "continuous")
+
+#Create barplot as an object called “pie2”
+pie2 <- ggplot(data = class, aes(x = "", y = percent, fill = Class)) + 
+	 geom_bar(stat="identity", width = 10) +
+	ylab("Percent") +
+	scale_fill_manual(values = pal1)
+
+#Creating pie chart from object “pie2”
+pie2 + coord_polar(theta = "y")
+```
