@@ -76,7 +76,7 @@ summary.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.preclust
 The outputs of the preclustering step was later put into a directory called ```precluster```.
 
 ## Chimera Removal
-chimera.uchime identified chimeric sequences, which were then removed from the fasta file generated after preclustering according to the outputted .accnos file. This outputted a fasta file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta``` and its corresponding count table. The results were then summarized in ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.summary```.
+chimera.uchime (Edgar, 2016) identified chimeric sequences, which were then removed from the fasta file generated after preclustering according to the outputted .accnos file. This outputted a fasta file called ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.fasta``` and its corresponding count table. The results were then summarized in ```depth165.trim.contigs.good.unique.good.filter.unique.precluster.pick.summary```.
 ```
 chimera.uchime(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t)
 remove.seqs(fasta=depth165.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.pick.count_table, accnos=depth165.trim.contigs.good.unique.good.filter.unique.precluster.denovo.uchime.accnos)
